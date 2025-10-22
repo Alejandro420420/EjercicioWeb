@@ -16,29 +16,21 @@
 <h1>Listar Productos</h1>
 <table border="1">
     <tr>
+        <td>ID</td>
         <td>DNI</td>
-        <td>Nombre</td>
-        <td>Sexo</td>
-        <td>Categoria</td>
-        <td>Años</td>
-        <td>Acción</td>
+        <td>Sueldo Base</td>
+        <td>Sueldo</td>
     </tr>
     <c:forEach var="ejercicio" items="${lista}">
         <tr>
+            <td>${nominas.id}</td>
             <td>
-                <a href="ejercicio?opcion=editar&dni=${ejercicio.dni}">
-                        ${ejercicio.dni}
+                <a href="ejercicio?opcion=editar&dni=${nominas.dni}">
+                        ${nominas.dni}
                 </a>
             </td>
-            <td>${ejercicio.nombre}</td>
-            <td>${ejercicio.sexo}</td>
-            <td>${ejercicio.categoria}</td>
-            <td>${ejercicio.anyos}</td>
-            <td>
-                <a href="ejercicio?opcion=eliminar&dni=${ejercicio.dni}">
-                    Eliminar
-                </a>
-            </td>
+            <td>${nominas.sueldo_base}</td>
+            <td>${nominas.sueldo}</td>
         </tr>
 
     </c:forEach>

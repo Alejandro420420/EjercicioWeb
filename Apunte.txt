@@ -1,0 +1,2 @@
+Crear NominasController y el NominasDAO
+Añadir Metodos en el servlet, y enlazarlo en el index.jsp

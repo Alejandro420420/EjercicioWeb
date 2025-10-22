@@ -1,35 +1,33 @@
 package com.aprendec.dao;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.aprendec.conexion.Conexion;
-import com.aprendec.model.Producto;
+import com.aprendec.model.Empleados;
 
-public class ProductoDao {
+public class EmpleadosDao {
     private Connection connection;
     private PreparedStatement statement;
     private boolean estadoOperacion;
 
     // guardar producto
-    public boolean guardar(Producto producto) throws SQLException {
+    public boolean guardar(Empleados empleados) throws SQLException {
         String sql = null;
         estadoOperacion = false;
         connection = obtenerConexion();
 
         try {
             connection.setAutoCommit(false);
-            sql = "INSERT INTO productos (id, nombre, cantidad, precio, fecha_crear,fecha_actualizar) VALUES(?,?,?,?,?,?)";
+            sql = "INSERT INTO empleados (dni, nombre, sexo, categoria, anyos) VALUES(?,?,?,?,?)";
             statement = connection.prepareStatement(sql);
 
-            statement.setString(1, producto.getNombre());
-            statement.setDouble(2, producto.getCantidad());
-            statement.setDouble(3, producto.getPrecio());
-            statement.setDate(4, producto.getFechaCrear());
-            statement.setDate(5, producto.getFechaActualizar());
+            statement.setString(1, empleados.getDni());
+            statement.setString(2, empleados.getNombre());
+            statement.setString(3, empleados.getSexo());
+            statement.setString(4, empleados.getCategoria());
+            statement.setInt(5, empleados.getAnyos());
 
             estadoOperacion = statement.executeUpdate() > 0;
 
@@ -45,20 +43,20 @@ public class ProductoDao {
     }
 
     // editar producto
-    public boolean editar(Producto producto) throws SQLException {
+    public boolean editar(Empleados empleados) throws SQLException {
         String sql = null;
         estadoOperacion = false;
         connection = obtenerConexion();
         try {
             connection.setAutoCommit(false);
-            sql = "UPDATE productos SET nombre=?, cantidad=?, precio=?, fecha_actualizar=? WHERE id=?";
+            sql = "UPDATE empleados SET nombre=?, sexo=?, categoria=?, anyos=? WHERE dni=?";
             statement = connection.prepareStatement(sql);
 
-            statement.setString(1, producto.getNombre());
-            statement.setDouble(2, producto.getCantidad());
-            statement.setDouble(3, producto.getPrecio());
-            statement.setDate(4, producto.getFechaActualizar());
-            statement.setInt(5, producto.getId());
+            statement.setString(1, empleados.getNombre());
+            statement.setString(2, empleados.getSexo());
+            statement.setString(3, empleados.getCategoria());
+            statement.setInt(4, empleados.getAnyos());
+            statement.setString(5, empleados.getDni());
 
             estadoOperacion = statement.executeUpdate() > 0;
             connection.commit();
@@ -74,15 +72,15 @@ public class ProductoDao {
     }
 
     // eliminar producto
-    public boolean eliminar(int idProducto) throws SQLException {
+    public boolean eliminar(String dni) throws SQLException {
         String sql = null;
         estadoOperacion = false;
         connection = obtenerConexion();
         try {
             connection.setAutoCommit(false);
-            sql = "DELETE FROM productos WHERE id=?";
+            sql = "DELETE FROM empleados WHERE dni=?";
             statement = connection.prepareStatement(sql);
-            statement.setInt(1, idProducto);
+            statement.setString(1, dni);
 
             estadoOperacion = statement.executeUpdate() > 0;
             connection.commit();
@@ -98,59 +96,58 @@ public class ProductoDao {
     }
 
     // obtener lista de productos
-    public List<Producto> obtenerProductos() throws SQLException {
+    public List<Empleados> obtenerProductos() throws SQLException {
         ResultSet resultSet = null;
-        List<Producto> listaProductos = new ArrayList<>();
+        List<Empleados> listaEmpleados = new ArrayList<>();
 
         String sql = null;
         estadoOperacion = false;
         connection = obtenerConexion();
 
         try {
-            sql = "SELECT * FROM productos";
+            sql = "SELECT * FROM empleados";
             statement = connection.prepareStatement(sql);
-            resultSet = statement.executeQuery(sql);
+            resultSet = statement.executeQuery();
+
             while (resultSet.next()) {
-                Producto p = new Producto();
-                p.setId(resultSet.getInt(1));
-                p.setNombre(resultSet.getString(2));
-                p.setCantidad(resultSet.getDouble(3));
-                p.setPrecio(resultSet.getDouble(4));
-                p.setFechaCrear(resultSet.getDate(5));
-                p.setFechaActualizar(resultSet.getDate(6));
-                listaProductos.add(p);
+                Empleados p = new Empleados();
+                p.setDni(resultSet.getString("dni"));
+                p.setNombre(resultSet.getString("nombre"));
+                p.setSexo(resultSet.getString("sexo"));
+                p.setCategoria(resultSet.getString("categoria"));
+                p.setAnyos(resultSet.getInt("anyos"));
+                listaEmpleados.add(p);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return listaProductos;
+        return listaEmpleados;
     }
 
     // obtener producto
-    public Producto obtenerProducto(int idProducto) throws SQLException {
+    public Empleados obtenerProducto(String dni) throws SQLException {
         ResultSet resultSet = null;
-        Producto p = new Producto();
+        Empleados p = new Empleados();
 
         String sql = null;
         estadoOperacion = false;
         connection = obtenerConexion();
 
         try {
-            sql = "SELECT * FROM productos WHERE id =?";
+            sql = "SELECT * FROM empleados WHERE dni = ?";
             statement = connection.prepareStatement(sql);
-            statement.setInt(1, idProducto);
+            statement.setString(1, dni);
 
             resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                p.setId(resultSet.getInt(1));
-                p.setNombre(resultSet.getString(2));
-                p.setCantidad(resultSet.getDouble(3));
-                p.setPrecio(resultSet.getDouble(4));
-                p.setFechaCrear(resultSet.getDate(5));
-                p.setFechaActualizar(resultSet.getDate(6));
+                p.setDni(resultSet.getString("dni"));
+                p.setNombre(resultSet.getString("nombre"));
+                p.setSexo(resultSet.getString("sexo"));
+                p.setCategoria(resultSet.getString("categoria"));
+                p.setAnyos(resultSet.getInt("anyos"));
             }
 
         } catch (SQLException e) {
@@ -159,7 +156,7 @@ public class ProductoDao {
 
         return p;
     }
-
+    
     // obtener conexion pool
     private Connection obtenerConexion() throws SQLException {
         return Conexion.getConnection();
