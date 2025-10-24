@@ -10,42 +10,53 @@
 <body>
 <h1>Editar Empleado</h1>
 
-<form action="ejercicio" method="post">
+<form action="empleados" method="post">
     <input type="hidden" name="opcion" value="editar">
 
     <table border="1">
         <tr>
             <td>DNI:</td>
             <td>
-                <input type="text" name="dni" value="${ejercicio.dni}" readonly>
+                <input type="text" name="dni" value="${empleados.dni}" readonly>
             </td>
         </tr>
         <tr>
             <td>Nombre:</td>
             <td>
-                <input type="text" name="nombre" value="${ejercicio.nombre}">
+                <input type="text" name="nombre" value="${empleados.nombre}">
             </td>
         </tr>
         <tr>
             <td>Sexo:</td>
             <td>
-                <input type="text" name="sexo" value="${ejercicio.sexo}">
+                <select name="sexo" required>
+                    <option value="">--Seleccione--</option>
+                    <option value="M" ${empleados.sexo == 'M' ? 'selected' : ''}>Masculino</option>
+                    <option value="F" ${empleados.sexo == 'F' ? 'selected' : ''}>Femenino</option>
+                </select>
             </td>
         </tr>
         <tr>
             <td>Categoría:</td>
             <td>
-                <input type="text" name="categoria" value="${ejercicio.categoria}">
+                <select name="categoria" required>
+                    <option value="">--Seleccione--</option>
+                    <c:forEach var="cat" items="${categorias}">
+                        <option value="${cat}" ${cat == empleados.categoria ? 'selected' : ''}>${cat}</option>
+                    </c:forEach>
+                </select>
             </td>
         </tr>
         <tr>
             <td>Años:</td>
             <td>
-                <input type="number" name="anyos" value="${ejercicio.anyos}">
+                <input type="number" name="anyos" value="${empleados.anyos}">
             </td>
         </tr>
     </table>
-
+    <div class="volver">
+        <a href="${pageContext.request.contextPath}/index.jsp">? Volver al menú principal</a>
+    </div>
     <input type="submit" value="Guardar">
 </form>
 

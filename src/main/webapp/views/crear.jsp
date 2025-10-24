@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>Crear Producto</h1>
-<form action="ejercicio" method="post">
+<form action="empleados" method="post">
     <input type="hidden" name="opcion" value="guardar">
     <table border="1">
         <tr>
@@ -29,13 +29,23 @@
         </tr>
         <tr>
             <td>Categoria:</td>
-            <td><input type="text" name="categoria" size="50" required></td>
+            <td>
+                <select name="categoria" required>
+                    <option value="">--Seleccione--</option>
+                    <c:forEach var="cat" items="${categorias}">
+                        <option value="${cat}">${cat}</option>
+                    </c:forEach>
+                </select>
+            </td>
         </tr>
         <tr>
             <td>Años:</td>
             <td><input type="number" name="anyos" min="0" required></td>
         </tr>
     </table>
+    <div class="volver">
+        <a href="${pageContext.request.contextPath}/index.jsp">← Volver al menú principal</a>
+    </div>
     <input type="submit" value="Guardar">
 </form>
 </body>

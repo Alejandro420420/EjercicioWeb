@@ -1,4 +1,4 @@
-package com.aprendec.controller;
+package empresa.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -11,11 +11,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import empresa.dao.NominasDao;
+import empresa.model.Nominas;
 
-import com.aprendec.dao.EmpleadosDao;
-import com.aprendec.model.Empleados;
+import empresa.dao.EmpleadosDao;
+import empresa.model.Empleados;
 
-@WebServlet(description = "Administra peticiones para la tabla productos", urlPatterns = { "/ejercicio" })
+@WebServlet(description = "Administra peticiones para la tabla productos", urlPatterns = { "/empleados" })
 public class EmpleadosController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -31,6 +33,11 @@ public class EmpleadosController extends HttpServlet {
 
         if (opcion.equals("crear")) {
             System.out.println("Usted ha presionado la opción crear");
+            List<Integer> categorias = new ArrayList<>();
+            for (int i = 5000; i <= 23000; i += 2000) {
+                categorias.add(i);
+            }
+            request.setAttribute("categorias", categorias);
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/views/crear.jsp");
             requestDispatcher.forward(request, response);
 
@@ -47,6 +54,7 @@ public class EmpleadosController extends HttpServlet {
 
                 request.setAttribute("lista", lista);
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher("/views/listar.jsp");
+
                 requestDispatcher.forward(request, response);
 
             } catch (SQLException e) {
@@ -62,7 +70,12 @@ public class EmpleadosController extends HttpServlet {
             try {
                 p = empleadosDAO.obtenerProducto(dni);
                 System.out.println(p);
-                request.setAttribute("ejercicio", p);
+                request.setAttribute("empleados", p);
+                List<Integer> categorias = new ArrayList<>();
+                for (int i = 5000; i <= 23000; i += 2000) {
+                    categorias.add(i);
+                }
+                request.setAttribute("categorias", categorias);
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher("/views/editar.jsp");
                 requestDispatcher.forward(request, response);
 
@@ -95,16 +108,24 @@ public class EmpleadosController extends HttpServlet {
         if (opcion.equals("guardar")) {
             EmpleadosDao empleadosDAO = new EmpleadosDao();
             Empleados empleados = new Empleados();
+            NominasDao nominasDAO = new NominasDao();
 
             empleados.setDni(request.getParameter("dni"));
             empleados.setNombre(request.getParameter("nombre"));
             empleados.setSexo(request.getParameter("sexo"));
-            empleados.setCategoria(request.getParameter("categoria"));
+            empleados.setCategoria(Integer.parseInt(request.getParameter("categoria")));
             empleados.setAnyos(Integer.parseInt(request.getParameter("anyos")));
 
             try {
                 empleadosDAO.guardar(empleados);
                 System.out.println("Registro guardado satisfactoriamente...");
+                double sueldoBase = empleados.getCategoria();
+                double sueldo = (empleados.getCategoria() + 5000) * empleados.getAnyos();
+
+                Nominas nomina = new Nominas();
+                nomina.setDni(empleados.getDni());
+                nomina.setSueldoBase(sueldoBase);
+                nomina.setSueldo(sueldo);
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher("/index.jsp");
                 requestDispatcher.forward(request, response);
 
@@ -113,42 +134,49 @@ public class EmpleadosController extends HttpServlet {
             }
 
         } else if (opcion.equals("editar")) {
-            Empleados empleados = new Empleados();
             EmpleadosDao empleadosDAO = new EmpleadosDao();
+            NominasDao nominasDAO = new NominasDao();
 
+            Empleados empleados = new Empleados();
             empleados.setDni(request.getParameter("dni"));
             empleados.setNombre(request.getParameter("nombre"));
             empleados.setSexo(request.getParameter("sexo"));
-            empleados.setCategoria(request.getParameter("categoria"));
+            empleados.setCategoria(Integer.parseInt(request.getParameter("categoria")));
             empleados.setAnyos(Integer.parseInt(request.getParameter("anyos")));
 
             try {
+                // Editar empleado
                 empleadosDAO.editar(empleados);
-                System.out.println("Registro editado satisfactoriamente...");
+                System.out.println("Empleado editado correctamente.");
+
+                // Recalcular sueldo
+                double sueldoBase = empleados.getCategoria();
+                double sueldo = (empleados.getCategoria() + 5000) * empleados.getAnyos();
+
+                // Verificar si ya existe nómina
+                Nominas nomina = nominasDAO.obtenerNominaPorDni(empleados.getDni());
+                if (nomina != null && nomina.getDni() != null) {
+                    // Actualizar nómina existente
+                    nomina.setSueldoBase(sueldoBase);
+                    nomina.setSueldo(sueldo);
+                    nominasDAO.editar(nomina);
+                    System.out.println("Nómina actualizada correctamente.");
+                } else {
+                    // Crear una nueva nómina
+                    nomina = new Nominas();
+                    nomina.setDni(empleados.getDni());
+                    nomina.setSueldoBase(sueldoBase);
+                    nomina.setSueldo(sueldo);
+                    nominasDAO.guardar(nomina);
+                    System.out.println("Nómina creada correctamente (nuevo registro).");
+                }
+
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher("/index.jsp");
                 requestDispatcher.forward(request, response);
 
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-
         }
-        else if (opcion.equals("sueldo")) {
-            String dni = request.getParameter("dni");
-            System.out.println("Editar dni: " + dni);
-            EmpleadosDao empleadosDAO = new EmpleadosDao();
-            Empleados p = new Empleados();
-
-            try {
-                p = empleadosDAO.obtenerProducto(dni);
-                System.out.println(p);
-                request.setAttribute("ejercicio", p);
-                RequestDispatcher requestDispatcher = request.getRequestDispatcher("/views/sueldo.jsp");
-                requestDispatcher.forward(request, response);
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        }
+    }
 }

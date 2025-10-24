@@ -1,4 +1,4 @@
-package com.aprendec.model;
+package empresa.model;
 
 public class Nominas {
     private int id;

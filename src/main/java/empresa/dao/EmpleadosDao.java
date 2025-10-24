@@ -1,11 +1,11 @@
-package com.aprendec.dao;
+package empresa.dao;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.aprendec.conexion.Conexion;
-import com.aprendec.model.Empleados;
+import empresa.conexion.Conexion;
+import empresa.model.Empleados;
 
 public class EmpleadosDao {
     private Connection connection;
@@ -26,7 +26,7 @@ public class EmpleadosDao {
             statement.setString(1, empleados.getDni());
             statement.setString(2, empleados.getNombre());
             statement.setString(3, empleados.getSexo());
-            statement.setString(4, empleados.getCategoria());
+            statement.setInt(4, empleados.getCategoria());
             statement.setInt(5, empleados.getAnyos());
 
             estadoOperacion = statement.executeUpdate() > 0;
@@ -54,7 +54,7 @@ public class EmpleadosDao {
 
             statement.setString(1, empleados.getNombre());
             statement.setString(2, empleados.getSexo());
-            statement.setString(3, empleados.getCategoria());
+            statement.setInt(3, empleados.getCategoria());
             statement.setInt(4, empleados.getAnyos());
             statement.setString(5, empleados.getDni());
 
@@ -114,7 +114,7 @@ public class EmpleadosDao {
                 p.setDni(resultSet.getString("dni"));
                 p.setNombre(resultSet.getString("nombre"));
                 p.setSexo(resultSet.getString("sexo"));
-                p.setCategoria(resultSet.getString("categoria"));
+                p.setCategoria(resultSet.getInt("categoria"));
                 p.setAnyos(resultSet.getInt("anyos"));
                 listaEmpleados.add(p);
             }
@@ -146,7 +146,7 @@ public class EmpleadosDao {
                 p.setDni(resultSet.getString("dni"));
                 p.setNombre(resultSet.getString("nombre"));
                 p.setSexo(resultSet.getString("sexo"));
-                p.setCategoria(resultSet.getString("categoria"));
+                p.setCategoria(resultSet.getInt("categoria"));
                 p.setAnyos(resultSet.getInt("anyos"));
             }
 

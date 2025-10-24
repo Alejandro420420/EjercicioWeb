@@ -1,10 +1,10 @@
-package com.aprendec.model;
+package empresa.model;
 
 public class Empleados {
     private String dni;
     private String nombre;
     private String sexo;
-    private String categoria;
+    private int categoria;
     private int anyos;
 
     // Getters y Setters
@@ -33,11 +33,11 @@ public class Empleados {
         this.sexo = sexo;
     }
 
-    public String getCategoria() {
+    public int getCategoria() {
         return categoria;
     }
 
-    public void setCategoria(String categoria) {
+    public void setCategoria(int categoria) {
         this.categoria = categoria;
     }
 

@@ -1,4 +1,4 @@
-package com.aprendec.conexion;
+package empresa.conexion;
 import java.sql.*;
 
 import javax.sql.DataSource;

@@ -13,7 +13,7 @@
     <title>Listar Empleados</title>
 </head>
 <body>
-<h1>Listar Productos</h1>
+<h1>Listar Empleados</h1>
 <table border="1">
     <tr>
         <td>DNI</td>
@@ -23,25 +23,27 @@
         <td>Años</td>
         <td>Acción</td>
     </tr>
-    <c:forEach var="ejercicio" items="${lista}">
+    <c:forEach var="empleados" items="${lista}">
         <tr>
             <td>
-                <a href="ejercicio?opcion=editar&dni=${ejercicio.dni}">
-                        ${ejercicio.dni}
+                <a href="empleados?opcion=editar&dni=${empleados.dni}">
+                        ${empleados.dni}
                 </a>
             </td>
-            <td>${ejercicio.nombre}</td>
-            <td>${ejercicio.sexo}</td>
-            <td>${ejercicio.categoria}</td>
-            <td>${ejercicio.anyos}</td>
+            <td>${empleados.nombre}</td>
+            <td>${empleados.sexo}</td>
+            <td>${empleados.categoria}</td>
+            <td>${empleados.anyos}</td>
             <td>
-                <a href="ejercicio?opcion=eliminar&dni=${ejercicio.dni}">
+                <a href="empleados?opcion=eliminar&dni=${empleados.dni}">
                     Eliminar
                 </a>
             </td>
         </tr>
-
     </c:forEach>
 </table>
+<div class="volver">
+    <a href="${pageContext.request.contextPath}/index.jsp">← Volver al menú principal</a>
+</div>
 </body>
 </html>
