@@ -12,7 +12,6 @@ public class NominasDao {
     private PreparedStatement statement;
     private boolean estadoOperacion;
 
-    // guardar nomina
     public boolean guardar(Nominas nomina) throws SQLException {
         String sql = null;
         estadoOperacion = false;
@@ -151,7 +150,7 @@ public class NominasDao {
 
         return n;
     }
-    
+
     // obtener nomina por dni
     public Nominas obtenerNominaPorDni(String dni) throws SQLException {
         ResultSet resultSet = null;

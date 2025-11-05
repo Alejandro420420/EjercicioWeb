@@ -6,11 +6,13 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <title>Editar Empleado</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilo.css">
 </head>
 <body>
 <h1>Editar Empleado</h1>
 
-<form action="empleados" method="post">
+<form action="controller" method="post">
+    <input type="hidden" name="entidad" value="empleados">
     <input type="hidden" name="opcion" value="editar">
 
     <table border="1">

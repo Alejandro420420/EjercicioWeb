@@ -11,6 +11,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Listar Empleados</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilo.css">
 </head>
 <body>
 <h1>Listar Empleados</h1>
@@ -26,7 +27,7 @@
     <c:forEach var="empleados" items="${lista}">
         <tr>
             <td>
-                <a href="empleados?opcion=editar&dni=${empleados.dni}">
+                <a href="controller?entidad=empleados&opcion=editar&dni=${empleados.dni}">
                         ${empleados.dni}
                 </a>
             </td>
@@ -35,7 +36,7 @@
             <td>${empleados.categoria}</td>
             <td>${empleados.anyos}</td>
             <td>
-                <a href="empleados?opcion=eliminar&dni=${empleados.dni}">
+                <a href="controller?entidad=empleados&opcion=eliminar&dni=${empleados.dni}">
                     Eliminar
                 </a>
             </td>

@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8" />
     <title>Crear Producto</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilo.css">
 </head>
 <body>
 <h1>Crear Producto</h1>
-<form action="empleados" method="post">
+<form action="controller" method="post">
+    <input type="hidden" name="entidad" value="empleados">
     <input type="hidden" name="opcion" value="guardar">
     <table border="1">
         <tr>
@@ -28,16 +30,10 @@
             </td>
         </tr>
         <tr>
+
             <td>Categoria:</td>
-            <td>
-                <select name="categoria" required>
-                    <option value="">--Seleccione--</option>
-                    <c:forEach var="cat" items="${categorias}">
-                        <option value="${cat}">${cat}</option>
-                    </c:forEach>
-                </select>
-            </td>
-        </tr>
+            <td><input type="number" name="categoria" min="0" required></td>
+
         <tr>
             <td>Años:</td>
             <td><input type="number" name="anyos" min="0" required></td>

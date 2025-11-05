@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Consultar Salario</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilo.css">
 </head>
 <body>
 <h1>Consultar Salario de Empleado</h1>
@@ -11,7 +12,8 @@
 
 <div class="formulario">
     <h3>Ingrese el DNI del empleado</h3>
-    <form action="${pageContext.request.contextPath}/nominas" method="post">
+    <form action="${pageContext.request.contextPath}/controller" method="post">
+        <input type="hidden" name="entidad" value="nominas">
         <input type="hidden" name="opcion" value="consultarSalario">
         <div class="campo">
             <label for="dni">DNI:</label>
