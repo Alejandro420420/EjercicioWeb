@@ -1,0 +1,7 @@
+Crear NominasController y el NominasDAO
+Añadir Metodos en el servlet, y enlazarlo en el index.jsp
+
+Patrones de diseños
+Memento con su carpeta e implementada en editar.jsp y en frontcontroller apartado de editar al final del todo.
+Singleton en la conexión , todos los dao utilizan 1 instancia para tener conexion,
+Factory para el apartado de Guardar en el frontcontroller
