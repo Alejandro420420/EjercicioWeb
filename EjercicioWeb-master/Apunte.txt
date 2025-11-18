@@ -5,3 +5,8 @@ Patrones de diseños
 Memento con su carpeta e implementada en editar.jsp y en frontcontroller apartado de editar al final del todo.
 Singleton en la conexión , todos los dao utilizan 1 instancia para tener conexion,
 Factory para el apartado de Guardar en el frontcontroller
+
+Modicado parte web.xml spring
+frontcontroller cambiado entero
+añadido dependencias en el pom para spring, y aparte creacion del spring-config
+queda que apunten a el spring correctamente
